@@ -17,6 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __all__ = ["Broker"]
+import functools
 import logging
 import time
 
@@ -39,6 +40,7 @@ log = logging.getLogger(__name__)
 
 def _check_handler(fn):
     """Ensures that self._req_handler is not None before calling fn"""
+    @functools.wraps(fn)
     def wrapped(self, *args, **kwargs):
         if self._req_handler is None:
             raise SocketDisconnectedError
